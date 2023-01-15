@@ -5,3 +5,7 @@ class Cell:
         self.position_y = position_y
         self.size_x = size_x
         self.size_y = size_y
+
+        self.age = 0
+        self.energy = 100
+        self.speed = 4
