@@ -1,19 +1,18 @@
 class CellMover:
-    def __init__(self, cell, speed):
+    def __init__(self, cell):
         self.cell = cell
-        self.speed = speed
 
     def move_east(self):
-        self.cell.position_x += self.speed
+        self.cell.position_x += self.cell.speed
 
     def move_west(self):
-        self.cell.position_x -= self.speed
+        self.cell.position_x -= self.cell.speed
 
     def move_north(self):
-        self.cell.position_y += self.speed
+        self.cell.position_y += self.cell.speed
 
     def move_south(self):
-        self.cell.position_y -= self.speed
+        self.cell.position_y -= self.cell.speed
 
     def move_east_north(self):
         self.move_east()

@@ -6,6 +6,9 @@ from cellMover import CellMover
 from positionVerifier import PositionVerifier
 from randomMover import RandomMover
 from collisionVerifier import CollisionVerifier
+from lifeLaw import LifeLaw
+from cellFactory import CellFactory
+from cellPainter import CellPainter
 
 pygame.init()
 display_width = 1000
@@ -24,18 +27,23 @@ def run_game():
     max_ticks_one_side = 15
     cells = []
     r_movers = []
+    cell_factory = CellFactory(cell_color, display_width, display_height)
 
     for x in range(200):
-        cell = Cell(cell_color, cell_x + random.randint(0,display_width), cell_y + random.randint(0,display_height), cell_size_x, cell_size_y)
-        cellMover = CellMover(cell, cell.speed)
+        cell = cell_factory.create_cell()
+        cellMover = CellMover(cell)
         randomMover = RandomMover(cellMover, max_ticks_one_side)
         cells.append(cell)
         r_movers.append(randomMover)
+
+    cellPainter = CellPainter(cells)
+    lifeLaw = LifeLaw(cells)
 
     positionVerifier = PositionVerifier(display_width, display_height)
     for cell in cells:
         positionVerifier.add_cell(cell)
     collisionVerifier = CollisionVerifier()
+    collisionVerifier.VERIFY_INDEX = 2
     for cell in cells:
         collisionVerifier.add_cell(cell)
 
@@ -51,12 +59,15 @@ def run_game():
         #     x += 2
 
         # LOGIC
-        #cellMover.move_east()
+
+
+        lifeLaw.life()
         for randomMover in r_movers:
             randomMover.do_move()
 
         positionVerifier.verify()
         collisionVerifier.verify()
+        cellPainter.paint()
 
         # Drawing
         display.fill((255, 255, 255))

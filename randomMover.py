@@ -9,7 +9,7 @@ class RandomMover:
 
     def do_move(self):
         if self.ticks_moved == 0:
-            self.side_to_move = random.randint(0, 7)
+            self.side_to_move = random.randint(0, 8)
             self.ticks_moved = random.randint(1, self.max_ticks)
 
         if self.side_to_move == 0:
@@ -28,5 +28,7 @@ class RandomMover:
             self.cell_mover.move_west_north()
         elif self.side_to_move == 7:
             self.cell_mover.move_west_south()
+        elif self.side_to_move == 8:
+            pass
 
         self.ticks_moved -= 1
