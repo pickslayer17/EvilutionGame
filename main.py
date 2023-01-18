@@ -1,11 +1,7 @@
-import random
-
 import pygame
-from cell import Cell
-from cellMover import CellMover
-from positionVerifier import PositionVerifier
+from model.cell import Cell
+from verifiers.positionVerifier import PositionVerifier
 from randomMover import RandomMover
-from collisionVerifier import CollisionVerifier
 
 pygame.init()
 display_width = 1000
@@ -17,12 +13,15 @@ def run_game():
     game = True
 
     cell_color = (50, 205, 50)
-    cell_x = 40
-    cell_y = 40
+    cell_x = 400
+    cell_y = 400
     cell_size_x = 10
     cell_size_y = 10
 
     cell = Cell(cell_color, cell_x, cell_y)
+    randomMover = RandomMover(cell, 15)
+    pos_verifier = PositionVerifier(display_width, display_height)
+    pos_verifier.add_cell(cell)
 
     while game:
         for event in pygame.event.get():
@@ -36,6 +35,9 @@ def run_game():
         #     x += 2
 
         # LOGIC
+
+        randomMover.do_move()
+        pos_verifier.verify()
 
         # Drawing
         display.fill((255, 255, 255))
