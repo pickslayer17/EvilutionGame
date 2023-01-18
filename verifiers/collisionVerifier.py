@@ -1,10 +1,8 @@
 class CollisionVerifier:
-    def __init__(self):
-        self.cells = []
-        self.VERIFY_INDEX = 10
-
-    def add_cell(self, cell):
-        self.cells.append(cell)
+    col_index = 1
+    def __init__(self, cells):
+        self.cells = cells
+        self.VERIFY_INDEX = 45
 
     def verify(self):
         for i, cell in enumerate(self.cells):
@@ -17,6 +15,11 @@ class CollisionVerifier:
                 self.approx_compar(c.position_x, c2.position_x, self.VERIFY_INDEX) and
                 self.approx_compar(c.position_y, c2.position_y, self.VERIFY_INDEX)
         ):
+            if c.strength > c2.strength:
+                c.eat(c2)
+            else:
+                c2.eat(c)
+            CollisionVerifier.col_index += 1
             pass
 
 

@@ -1,7 +1,14 @@
+import threading
+
 import pygame
+
+from cellFactory import CellFactory
+from cellMonitor import CellMonitor
 from model.cell import Cell
+from verifiers.eatVerifier import EatVerifier
 from verifiers.positionVerifier import PositionVerifier
-from randomMover import RandomMover
+from model.randomMover import RandomMover
+from verifiers.collisionVerifier import CollisionVerifier
 
 pygame.init()
 display_width = 1000
@@ -12,16 +19,16 @@ clock = pygame.time.Clock()
 def run_game():
     game = True
 
-    cell_color = (50, 205, 50)
-    cell_x = 400
-    cell_y = 400
-    cell_size_x = 10
-    cell_size_y = 10
 
-    cell = Cell(cell_color, cell_x, cell_y)
-    randomMover = RandomMover(cell, 15)
-    pos_verifier = PositionVerifier(display_width, display_height)
-    pos_verifier.add_cell(cell)
+
+    cellFactory = CellFactory(display_width, display_height)
+    cells = cellFactory.create_cells(20)
+
+    pos_verifier = PositionVerifier(cells, display_width, display_height)
+    col_verifier = CollisionVerifier(cells)
+    eat_verifier = EatVerifier(cells)
+    cell_monitor = CellMonitor(cells)
+    cell_monitor.print_cells_stats()
 
     while game:
         for event in pygame.event.get():
@@ -36,13 +43,16 @@ def run_game():
 
         # LOGIC
 
-        randomMover.do_move()
+        for cell in cells:
+            cell.move_random()
         pos_verifier.verify()
+        col_verifier.verify()
+        eat_verifier.verify()
 
         # Drawing
         display.fill((255, 255, 255))
-        pygame.draw.rect(display, cell.color, (cell.position_x,cell.position_y, cell.size_x, cell.size_y))
-
+        for cell in cells:
+            pygame.draw.rect(display, cell.color, (cell.position_x,cell.position_y, cell.size_x, cell.size_y))
 
         # update part
         pygame.display.update()

@@ -1,11 +1,8 @@
 class PositionVerifier:
-    def __init__(self, display_width, display_height):
+    def __init__(self, cells, display_width, display_height):
         self.display_width = display_width
         self.display_height = display_height
-        self.cells = []
-
-    def add_cell(self, cell):
-        self.cells.append(cell)
+        self.cells = cells
 
     def verify(self):
         for cell in self.cells:
