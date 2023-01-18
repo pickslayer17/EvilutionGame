@@ -8,25 +8,16 @@ class CollisionVerifier:
 
     def verify(self):
         for i, cell in enumerate(self.cells):
-            for j, cell2 in enumerate(self.cells[i+1:]):
+            for cell2 in self.cells[i + 1:]:
+            #for j, cell2 in enumerate(self.cells[i+1:]):
                 self._do_verify(cell, cell2)
 
     def _do_verify(self, c, c2):
         if (
                 self.approx_compar(c.position_x, c2.position_x, self.VERIFY_INDEX) and
-                self.approx_compar(c.position_y, c2.position_y, self.VERIFY_INDEX) and
-                (c.is_alive and c2.is_alive)
+                self.approx_compar(c.position_y, c2.position_y, self.VERIFY_INDEX)
         ):
-            self._eat_verify(c, c2)
-
-    def _eat_verify(self, c, c2):
-        if c.strength > c2.strength:
-            c.eat_another_cell(c2)
-        elif c2.strength > c.strength:
-            c2.eat_another_cell(c)
-        elif c.strength == c2.strength:
-            c.become_stronger
-            c2.become_stronger
+            pass
 
 
     def approx_compar(self, x, y, index):
